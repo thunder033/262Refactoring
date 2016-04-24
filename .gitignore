@@ -7,7 +7,7 @@
 *.jar
 *.war
 *.ear
-*.iml
+#*.iml
 .idea
 out
 
