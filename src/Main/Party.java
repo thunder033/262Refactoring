@@ -1,3 +1,4 @@
+package Main;
 /*
  * Party.java
  *

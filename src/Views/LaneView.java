@@ -1,7 +1,10 @@
+package Views;
 /*
  *  constructs a prototype Lane View
  *
  */
+
+import Main.*;
 
 import java.awt.*;
 import java.awt.event.*;

@@ -1,3 +1,5 @@
+package Main;
+
 import java.util.HashMap;
 
 public interface LaneEventInterface extends java.rmi.Remote {

@@ -1,3 +1,4 @@
+package Main;
 /* ControlDesk.java
  *
  *  Version:
@@ -43,7 +44,7 @@
 import java.util.*;
 import java.io.*;
 
-class ControlDesk extends Thread {
+public class ControlDesk extends Thread {
 
 	/** The collection of Lanes */
 	private HashSet lanes;

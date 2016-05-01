@@ -1,3 +1,4 @@
+package Views;
 /* AddPartyView.java
  *
  *  Version:
@@ -30,6 +31,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
+import Main.BowlerFile;
+import Main.Bowler;
 
 import java.util.*;
 import java.text.*;

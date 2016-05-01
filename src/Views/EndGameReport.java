@@ -1,3 +1,4 @@
+package Views;
 /**
  *
  * To change this generated comment edit the template variable "typecomment":
@@ -6,6 +7,9 @@
  * Window>Preferences>Java>Code Generation.
  */
 
+import Main.Bowler;
+import Main.Party;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -13,7 +17,6 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 
 import java.util.*;
-import java.text.*;
 
 public class EndGameReport implements ActionListener, ListSelectionListener {
 

@@ -1,4 +1,4 @@
-
+package Main;
 /* $Id$
  *
  * Revisions:
@@ -130,6 +130,9 @@
  *
  * 
  */
+
+import Views.EndGamePrompt;
+import Views.EndGameReport;
 
 import java.util.Vector;
 import java.util.Iterator;
