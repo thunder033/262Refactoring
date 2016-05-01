@@ -59,10 +59,10 @@ public class LaneView implements LaneObserver, ActionListener {
 		frame.hide();
 	}
 
-	private JPanel makeFrame(Party party) {
+	private JPanel makeFrame(Vector party) {
 
 		initDone = false;
-		bowlers = party.getMembers();
+		bowlers = party;
 		int numBowlers = bowlers.size();
 
 		JPanel panel = new JPanel();
@@ -127,7 +127,7 @@ public class LaneView implements LaneObserver, ActionListener {
 
 	public void receiveLaneEvent(LaneEvent le) {
 		if (lane.isPartyAssigned()) {
-			int numBowlers = le.getParty().getMembers().size();
+			int numBowlers = le.getParty().size();
 			while (!initDone) {
 				//System.out.println("chillin' here.");
 				try {

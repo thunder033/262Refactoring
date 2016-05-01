@@ -25,10 +25,11 @@ package Main;
  */
 
 import java.util.HashMap;
+import java.util.Vector;
 
 public class LaneEvent {
 
-	private Party p;
+	private Vector p;
 	int frame;
 	int ball;
 	Bowler bowler;
@@ -39,7 +40,7 @@ public class LaneEvent {
 	int[] curScores;
 	boolean mechProb;
 	
-	public LaneEvent( Party pty, int theIndex, Bowler theBowler, int[][] theCumulScore, HashMap theScore, int theFrameNum, int[] theCurScores, int theBall, boolean mechProblem) {
+	public LaneEvent( Vector pty, int theIndex, Bowler theBowler, int[][] theCumulScore, HashMap theScore, int theFrameNum, int[] theCurScores, int theBall, boolean mechProblem) {
 		p = pty;
 		index = theIndex;
 		bowler = theBowler;
@@ -84,7 +85,7 @@ public class LaneEvent {
 		return cumulScore;
 	}
 
-	public Party getParty() {
+	public Vector getParty() {
 		return p;
 	}
 	
