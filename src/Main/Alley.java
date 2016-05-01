@@ -50,7 +50,7 @@ public class Alley extends Thread {
 	private HashSet lanes;
 
 	/** The party wait queue */
-	private Queue partyQueue;
+	private Vector partyQueue;
 
 	/** The number of lanes represented */
 	private int numLanes;
@@ -59,16 +59,17 @@ public class Alley extends Thread {
 	private Vector subscribers;
 
     /**
+     *
      * Constructor for the Alley class
      *
-     * @param numlanes	the numbler of lanes to be represented
+     * //@param numlanes	the numbler of lanes to be represented
      *
      */
 
 	public Alley(int numLanes) {
 		this.numLanes = numLanes;
 		lanes = new HashSet(numLanes);
-		partyQueue = new Queue();
+        partyQueue = new Vector();
 
 		subscribers = new Vector();
 
@@ -127,19 +128,19 @@ public class Alley extends Thread {
      *
      */
 
-	public void assignLane() {
-		Iterator it = lanes.iterator();
+    public void assignLane() {
+        Iterator it = lanes.iterator();
 
-		while (it.hasNext() && partyQueue.hasMoreElements()) {
-			Lane curLane = (Lane) it.next();
+        while (it.hasNext() && !partyQueue.isEmpty()) {
+            Lane curLane = (Lane) it.next();
 
-			if (curLane.isPartyAssigned() == false) {
-				System.out.println("ok... assigning this party");
-				curLane.assignParty(((Party) partyQueue.next()));
-			}
-		}
-		publish(new AlleyEvent(getPartyQueue()));
-	}
+            if (curLane.isPartyAssigned() == false) {
+                System.out.println("ok... assigning this party");
+                curLane.assignParty(((Party) partyQueue.remove(0)));
+            }
+        }
+        publish(new AlleyEvent(getPartyQueue()));
+    }
 
     /**
      */
@@ -155,16 +156,16 @@ public class Alley extends Thread {
      *
      */
 
-	public void addPartyQueue(Vector partyNicks) {
-		Vector partyBowlers = new Vector();
-		for (int i = 0; i < partyNicks.size(); i++) {
-			Bowler newBowler = registerPatron(((String) partyNicks.get(i)));
-			partyBowlers.add(newBowler);
-		}
-		Party newParty = new Party(partyBowlers);
-		partyQueue.add(newParty);
-		publish(new AlleyEvent(getPartyQueue()));
-	}
+    public void addPartyQueue(Vector partyNicks) {
+        Vector partyBowlers = new Vector();
+        for (int i = 0; i < partyNicks.size(); i++) {
+            Bowler newBowler = registerPatron(((String) partyNicks.get(i)));
+            partyBowlers.add(newBowler);
+        }
+        Party newParty = new Party(partyBowlers);
+        partyQueue.add(newParty);
+        publish(new AlleyEvent(getPartyQueue()));
+    }
 
     /**
      * Returns a Vector of party names to be displayed in the GUI representation of the wait queue.
@@ -173,17 +174,17 @@ public class Alley extends Thread {
      *
      */
 
-	public Vector getPartyQueue() {
-		Vector displayPartyQueue = new Vector();
-		for ( int i=0; i < ( (Vector)partyQueue.asVector()).size(); i++ ) {
-			String nextParty =
-				((Bowler) ((Vector) ((Party) partyQueue.asVector().get( i ) ).getMembers())
-					.get(0))
-					.getNickName() + "'s Party";
-			displayPartyQueue.addElement(nextParty);
-		}
-		return displayPartyQueue;
-	}
+    public Vector getPartyQueue() {
+        Vector displayPartyQueue = new Vector();
+        for ( int i=0; i < partyQueue.size(); i++ ) {
+            String nextParty =
+                    ((Bowler) ((Vector) ((Party) partyQueue.get( i ) ).getMembers())
+                            .get(0))
+                            .getNickName() + "'s Party";
+            displayPartyQueue.addElement(nextParty);
+        }
+        return displayPartyQueue;
+    }
 
     /**
      * Accessor for the number of lanes represented by the Alley
