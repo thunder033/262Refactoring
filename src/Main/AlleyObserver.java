@@ -1,5 +1,5 @@
 package Main;
-/* ControlDeskObserver.java
+/* AlleyObserver.java
  *
  *  Version
  *  $Id$
@@ -14,8 +14,8 @@ package Main;
  *
  */
 
-public interface ControlDeskObserver {
+public interface AlleyObserver {
 
-	public void receiveControlDeskEvent(ControlDeskEvent ce);
+	public void receiveAlleyEvent(AlleyEvent ce);
 
 }

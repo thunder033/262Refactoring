@@ -16,7 +16,7 @@ package Views;
  * 		Made updates to migrate to observer model.
  * 		
  * 		Revision 1.4  2003/02/02 16:29:52  ???
- * 		Added ControlDeskEvent and ControlDeskObserver. Updated Queue to allow access to Vector so that contents could be viewed without destroying. Implemented observer model for most of ControlDesk.
+ * 		Added AlleyEvent and AlleyObserver. Updated Queue to allow access to Vector so that contents could be viewed without destroying. Implemented observer model for most of Alley.
  * 		
  * 
  */
@@ -35,7 +35,6 @@ import Main.BowlerFile;
 import Main.Bowler;
 
 import java.util.*;
-import java.text.*;
 
 /**
  * Constructor for GUI used to Add Parties to the waiting party queue.
@@ -52,13 +51,13 @@ public class AddPartyView implements ActionListener, ListSelectionListener {
 	private Vector party, bowlerdb;
 	private Integer lock;
 
-	private ControlDeskView controlDesk;
+	private AlleyView alley;
 
 	private String selectedNick, selectedMember;
 
-	public AddPartyView(ControlDeskView controlDesk, int max) {
+	public AddPartyView(AlleyView alley, int max) {
 
-		this.controlDesk = controlDesk;
+		this.alley = alley;
 		maxSize = max;
 
 		win = new JFrame("Add Party");
@@ -180,7 +179,7 @@ public class AddPartyView implements ActionListener, ListSelectionListener {
 		}
 		if (e.getSource().equals(finished)) {
 			if ( party != null && party.size() > 0) {
-				controlDesk.updateAddParty( this );
+				alley.updateAddParty( this );
 			}
 			win.hide();
 		}

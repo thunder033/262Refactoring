@@ -1,5 +1,5 @@
 package Main;
-/* ControlDeskEvent.java
+/* AlleyEvent.java
  *
  *  Version:
  *  		$Id$
@@ -16,19 +16,19 @@ package Main;
 
 import java.util.*;
 
-public class ControlDeskEvent {
+public class AlleyEvent {
 
 	/** A representation of the wait queue, containing party names */
 	private Vector partyQueue;
 
     /**
-     * Contstructor for the ControlDeskEvent
+     * Contstructor for the AlleyEvent
      *
      * @param partyQueue	a Vector of Strings containing the names of the parties in the wait queue
      *
      */
 
-	public ControlDeskEvent( Vector partyQueue ) {
+	public AlleyEvent(Vector partyQueue ) {
 		this.partyQueue = partyQueue;
 	}
 

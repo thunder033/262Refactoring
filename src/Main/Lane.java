@@ -73,7 +73,7 @@ package Main;
  *   Pinsetter generates an event when all pins are reset
  *
  *   Revision 1.27  2003/02/02 23:26:32  ???
- *   ControlDesk now runs its own thread and polls for free lanes to assign queue members to
+ *   Alley now runs its own thread and polls for free lanes to assign queue members to
  *
  *   Revision 1.26  2003/02/02 23:11:42  ???
  *   parties can now play more than 1 game on a lane, and lanes are properly released after games

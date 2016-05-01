@@ -1,5 +1,5 @@
 package Views;
-/* ControlDeskView.java
+/* AlleyView.java
  *
  *  Version:
  *			$Id$
@@ -23,7 +23,7 @@ import javax.swing.border.*;
 
 import java.util.*;
 
-public class ControlDeskView implements ActionListener, ControlDeskObserver {
+public class AlleyView implements ActionListener, AlleyObserver {
 
 	private JButton addParty, finished, assign;
 	private JFrame win;
@@ -32,18 +32,18 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 	/** The maximum  number of members in a party */
 	private int maxMembers;
 	
-	private ControlDesk controlDesk;
+	private Alley alley;
 
 	/**
-	 * Displays a GUI representation of the ControlDesk
+	 * Displays a GUI representation of the Alley
 	 *
 	 */
 
-	public ControlDeskView(ControlDesk controlDesk, int maxMembers) {
+	public AlleyView(Alley alley, int maxMembers) {
 
-		this.controlDesk = controlDesk;
+		this.alley = alley;
 		this.maxMembers = maxMembers;
-		int numLanes = controlDesk.getNumLanes();
+		int numLanes = alley.getNumLanes();
 
 		win = new JFrame("Control Desk");
 		win.getContentPane().setLayout(new BorderLayout());
@@ -83,7 +83,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		laneStatusPanel.setLayout(new GridLayout(numLanes, 1));
 		laneStatusPanel.setBorder(new TitledBorder("Lane Status"));
 
-		HashSet lanes=controlDesk.getLanes();
+		HashSet lanes= alley.getLanes();
 		Iterator it = lanes.iterator();
 		int laneCount=0;
 		while (it.hasNext()) {
@@ -150,7 +150,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 			AddPartyView addPartyWin = new AddPartyView(this, maxMembers);
 		}
 		if (e.getSource().equals(assign)) {
-			controlDesk.assignLane();
+			alley.assignLane();
 		}
 		if (e.getSource().equals(finished)) {
 			win.hide();
@@ -166,17 +166,17 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 	 */
 
 	public void updateAddParty(AddPartyView addPartyView) {
-		controlDesk.addPartyQueue(addPartyView.getParty());
+		alley.addPartyQueue(addPartyView.getParty());
 	}
 
 	/**
-	 * Receive a broadcast from a ControlDesk
+	 * Receive a broadcast from a Alley
 	 *
-	 * @param ce	the ControlDeskEvent that triggered the handler
+	 * @param ce	the AlleyEvent that triggered the handler
 	 *
 	 */
 
-	public void receiveControlDeskEvent(ControlDeskEvent ce) {
+	public void receiveAlleyEvent(AlleyEvent ce) {
 		partyList.setListData(((Vector) ce.getPartyQueue()));
 	}
 }

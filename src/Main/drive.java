@@ -1,6 +1,6 @@
 package Main;
 
-import Views.ControlDeskView;
+import Views.AlleyView;
 
 public class drive {
 
@@ -9,11 +9,10 @@ public class drive {
 		int numLanes = 3;
 		int maxPatronsPerParty=5;
 
-		Alley a = new Alley( numLanes );
-		ControlDesk controlDesk = a.getControlDesk();
+		Alley alley = new Alley(numLanes);
 
-		ControlDeskView cdv = new ControlDeskView( controlDesk, maxPatronsPerParty);
-		controlDesk.subscribe( cdv );
+		AlleyView cdv = new AlleyView(alley, maxPatronsPerParty);
+		alley.subscribe( cdv );
 
 	}
 }
