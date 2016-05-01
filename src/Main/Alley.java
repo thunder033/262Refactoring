@@ -44,7 +44,7 @@ package Main;
 import java.util.*;
 import java.io.*;
 
-public class Alley extends Thread {
+public class Alley{
 
 	/** The collection of Lanes */
 	private HashSet lanes;
@@ -57,6 +57,8 @@ public class Alley extends Thread {
 	
 	/** The collection of subscribers */
 	private Vector subscribers;
+
+    private Thread alleyThread;
 
     /**
      *
@@ -75,24 +77,32 @@ public class Alley extends Thread {
 		for (int i = 0; i < numLanes; i++) {
 			lanes.add(new Lane());
 		}
-		
-		this.start();
 
+        runThread();
 	}
-	
+
 	/**
 	 * Main loop for Alley's thread
-	 * 
+	 *
 	 */
-	public void run() {
-		while (true) {
-			
-			assignLane();
-			
-			try {
-				sleep(250);
-			} catch (Exception e) {}
-		}
+	public void runThread() {
+        alleyThread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while (true) {
+
+                    assignLane();
+
+                    try {
+                        Thread.sleep(250);
+                    } catch (Exception e) {}
+                }
+            }
+
+        });
+
+        alleyThread.start();
 	}
 		
 
