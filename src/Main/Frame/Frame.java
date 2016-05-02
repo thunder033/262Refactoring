@@ -15,7 +15,7 @@ public class Frame {
 
     private FrameState state;
 
-    int totalScore = Unset;
+    private int totalScore = Unset;
 
     public Frame(){
         state = FrameState.ACTIVE;
@@ -23,6 +23,14 @@ public class Frame {
         pinCounts.put(Ball.ONE, Unset);
         pinCounts.put(Ball.TWO, Unset);
         pinCounts.put(Ball.THREE, Unset);
+    }
+
+    void setNext(Frame frame){
+        next = frame;
+    }
+
+    void setPrev(Frame frame){
+        prev = frame;
     }
 
     boolean isStrike(){
@@ -34,7 +42,7 @@ public class Frame {
     }
 
     int getPinCount(Ball ball){
-        return isBowled(ball) ? 0 : pinCounts.get(ball);
+        return isBowled(ball) ? pinCounts.get(ball) : 0;
     }
 
     int getBaseScore(){
@@ -46,7 +54,7 @@ public class Frame {
     }
 
     boolean isBowled(Ball ball){
-        return getPinCount(ball) == Unset;
+        return pinCounts.get(ball) != Unset;
     }
 
     int getChainScore(FrameState forState){
