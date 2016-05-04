@@ -25,11 +25,11 @@ public class Frame {
         pinCounts.put(Ball.THREE, Unset);
     }
 
-    void setNext(Frame frame){
+    public void setNext(Frame frame){
         next = frame;
     }
 
-    void setPrev(Frame frame){
+    public void setPrev(Frame frame){
         prev = frame;
     }
 
@@ -69,7 +69,7 @@ public class Frame {
         this.state = state;
     }
 
-    void setPinCount(int count){
+    public void setPinCount(int count){
         state.setPinCount(this, count);
     }
 

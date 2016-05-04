@@ -140,7 +140,7 @@ public class Lane extends Observable implements Observer {
 	private Thread laneThread;
 
 	private Vector party;
-	private Pinsetter setter;
+	private Pinsetter pinsetter;
 	private HashMap scores;
 	private Vector subscribers;
 
@@ -171,7 +171,7 @@ public class Lane extends Observable implements Observer {
 	 * @post a new lane has been created and its thered is executing
 	 */
 	public Lane() { 
-		setter = new Pinsetter();
+		pinsetter = new Pinsetter();
 		scores = new HashMap();
 		subscribers = new Vector();
 
@@ -180,7 +180,7 @@ public class Lane extends Observable implements Observer {
 
 		gameNumber = 0;
 
-		setter.addObserver(this);
+		pinsetter.addObserver(this);
 
 		
 		runThread();
@@ -214,7 +214,7 @@ public class Lane extends Observable implements Observer {
 							tenthFrameStrike = false;
 							ball = 0;
 							while (canThrowAgain) {
-								setter.ballThrown();        // simulate the thrower's ball hiting
+								pinsetter.ballThrown();        // simulate the thrower's ball hiting
 								ball++;
 							}
 
@@ -229,8 +229,7 @@ public class Lane extends Observable implements Observer {
 								}
 							}
 
-
-							setter.reset();
+							pinsetter.reset();
 							bowlIndex++;
 
 						} else {
@@ -357,21 +356,23 @@ public class Lane extends Observable implements Observer {
 	 *
 	 * Method that marks a bowlers score on the board.
 	 * 
-	 * @param Cur		The current bowler
+	 * @param bowler		The current bowler
 	 * @param frame	The frame that bowler is on
 	 * @param ball		The ball the bowler is on
-	 * @param score	The bowler's score 
+	 * @param pins	The bowler's score
 	 */
-	private void markScore( Bowler Cur, int frame, int ball, int score ){
+	private void markScore( Bowler bowler, int frame, int ball, int pins ){
 		int[] curScore;
 		int index =  ( (frame - 1) * 2 + ball);
 
-		curScore = (int[]) scores.get(Cur);
+		bowler.markThrow(pins);
+
+		curScore = (int[]) scores.get(bowler);
 
 	
-		curScore[ index - 1] = score;
-		scores.put(Cur, curScore);
-		getScore( Cur, frame );
+		curScore[ index - 1] = pins;
+		scores.put(bowler, curScore);
+		getScore( bowler, frame );
 		publish( lanePublish() );
 	}
 
@@ -381,7 +382,7 @@ public class Lane extends Observable implements Observer {
 	 * 
 	 * @return		The new lane event
 	 */
-	private LaneEvent lanePublish(  ) {
+	private LaneEvent lanePublish() {
 		LaneEvent laneEvent = new LaneEvent(party, bowlIndex, currentThrower, cumulScores, scores, frameNumber+1, curScores, ball, gameIsHalted);
 		return laneEvent;
 	}
@@ -565,7 +566,7 @@ public class Lane extends Observable implements Observer {
 	 */
 
 	public Pinsetter getPinsetter() {
-		return setter;	
+		return pinsetter;
 	}
 
 	/**
@@ -586,28 +587,28 @@ public class Lane extends Observable implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		Pinsetter pe = (Pinsetter)o;
+
 		int pinsDownThisThrow = (Integer) arg;
 
 		if (pinsDownThisThrow >=  0) {			// this is a real throw
-			markScore(currentThrower, frameNumber + 1, pe.getThrowNumber(), pinsDownThisThrow);
+			markScore(currentThrower, frameNumber + 1, pinsetter.getThrowNumber(), pinsDownThisThrow);
 
 			// next logic handles the ?: what conditions dont allow them another throw?
 			// handle the case of 10th frame first
 			if (frameNumber == 9) {
-				if (pe.totalPinsDown() == 10) {
-					setter.resetPins();
-					if(pe.getThrowNumber() == 1) {
+				if (pinsetter.totalPinsDown() == 10) {
+					pinsetter.resetPins();
+					if(pinsetter.getThrowNumber() == 1) {
 						tenthFrameStrike = true;
 					}
 				}
 
-				if ((pe.totalPinsDown() != 10) && (pe.getThrowNumber() == 2 && tenthFrameStrike == false)) {
+				if ((pinsetter.totalPinsDown() != 10) && (pinsetter.getThrowNumber() == 2 && tenthFrameStrike == false)) {
 					canThrowAgain = false;
 					//publish( lanePublish() );
 				}
 
-				if (pe.getThrowNumber() == 3) {
+				if (pinsetter.getThrowNumber() == 3) {
 					canThrowAgain = false;
 					//publish( lanePublish() );
 				}
@@ -616,10 +617,10 @@ public class Lane extends Observable implements Observer {
 				if (pinsDownThisThrow == 10) {		// threw a strike
 					canThrowAgain = false;
 					//publish( lanePublish() );
-				} else if (pe.getThrowNumber() == 2) {
+				} else if (pinsetter.getThrowNumber() == 2) {
 					canThrowAgain = false;
 					//publish( lanePublish() );
-				} else if (pe.getThrowNumber() == 3)
+				} else if (pinsetter.getThrowNumber() == 3)
 					System.out.println("I'm here...");
 			}
 		} else {								//  this is not a real throw, probably a reset
