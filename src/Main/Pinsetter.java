@@ -73,10 +73,9 @@ package Main;
 
 import java.util.*;
 
-public class Pinsetter {
+public class Pinsetter extends Observable {
 
 	private Random rnd;
-	private Vector subscribers;
 
 	private boolean[] pins; 
 			/* 0-9 of state of pine, true for standing, 
@@ -91,20 +90,6 @@ public class Pinsetter {
 	private boolean foul;
 	private int throwNumber;
 
-	/** sendEvent()
-	 * 
-	 * Sends pinsetter events to all subscribers
-	 * 
-	 * @pre none
-	 * @post all subscribers have recieved pinsetter event with updated state
-	 * */
-	private void sendEvent(int jdpins) {	// send events when our state is changd
-		for (int i=0; i < subscribers.size(); i++) {
-			((PinsetterObserver)subscribers.get(i)).receivePinsetterEvent(
-				new PinsetterEvent(pins, foul, throwNumber, jdpins));
-		}
-	}
-
 	/** Pinsetter()
 	 * 
 	 * Constructs a new pinsetter
@@ -116,7 +101,6 @@ public class Pinsetter {
 	public Pinsetter() {
 		pins = new boolean[10];
 		rnd = new Random();
-		subscribers = new Vector();
 		foul = false;
 		reset();
 	}
@@ -151,7 +135,8 @@ public class Pinsetter {
 			Thread.sleep(500);				// pinsetter is where delay will be in a real game
 		} catch (Exception e) {}
 
-		sendEvent(count);
+		setChanged();
+		notifyObservers(count);
 
 		throwNumber++;
 	}
@@ -171,8 +156,10 @@ public class Pinsetter {
 		try {
 			Thread.sleep(1000);
 		} catch (Exception e) {}
-		
-		sendEvent(-1);
+
+
+		setChanged();
+		notifyObservers(-1);
 	}
 
 	/** resetPins()
@@ -188,15 +175,42 @@ public class Pinsetter {
 		}
 	}		
 
-	/** subscribe()
-	 * 
-	 * subscribe objects to send events to
-	 * 
-	 * @pre none
-	 * @post the subscriber object will recieve events when their generated
+
+	public boolean pinKnockedDown(int i) {
+		return !pins[i];
+	}
+
+
+	/** totalPinsDown()
+	 *
+	 * @return the total number of pins down for pinsetter that generated the event
 	 */
-	public void subscribe(PinsetterObserver subscriber) {
-		subscribers.add(subscriber);
+	public int totalPinsDown() {
+		int count = 0;
+
+		for (int i=0; i <= 9; i++) {
+			if (pinKnockedDown(i)) {
+				count++;
+			}
+		}
+
+		return count;
+	}
+
+	/** isFoulCommited()
+	 *
+	 * @return true if a foul was commited on the lane, false otherwise
+	 */
+	public boolean isFoulCommited() {
+		return foul;
+	}
+
+	/** getThrowNumber()
+	 *
+	 * @return current number of throws taken on this lane after last reset
+	 */
+	public int getThrowNumber() {
+		return throwNumber;
 	}
 
 };

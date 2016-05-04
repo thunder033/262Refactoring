@@ -23,7 +23,7 @@ import javax.swing.border.*;
 
 import java.util.*;
 
-public class AlleyView implements ActionListener, AlleyObserver {
+public class AlleyView implements ActionListener, AlleyObserver, Observer {
 
 	private JButton addParty, finished, assign;
 	private JFrame win;
@@ -90,10 +90,11 @@ public class AlleyView implements ActionListener, AlleyObserver {
 			Lane curLane = (Lane) it.next();
 			LaneStatusView laneStat = new LaneStatusView(curLane,(laneCount+1));
 			curLane.subscribe(laneStat);
-			((Pinsetter)curLane.getPinsetter()).subscribe(laneStat);
 			JPanel lanePanel = laneStat.showLane();
 			lanePanel.setBorder(new TitledBorder("Lane" + ++laneCount ));
 			laneStatusPanel.add(lanePanel);
+
+			((Pinsetter)curLane.getPinsetter()).addObserver(laneStat);
 		}
 
 		// Party Queue Panel
@@ -178,5 +179,10 @@ public class AlleyView implements ActionListener, AlleyObserver {
 
 	public void receiveAlleyEvent(AlleyEvent ce) {
 		partyList.setListData(((Vector) ce.getPartyQueue()));
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		//partyList.setListData(((Alley)o).getPartyQueue());
 	}
 }
