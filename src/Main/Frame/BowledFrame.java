@@ -11,6 +11,9 @@ public class BowledFrame extends FrameHandler {
 
     @Override
     void setPinCount(Frame frame, int pinCount) {
+        if(frame.isLast())
+            throw new UnsupportedOperationException("No valid frame to set ball on");
+
         frame.next.setPinCount(pinCount);
     }
 

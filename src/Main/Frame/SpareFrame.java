@@ -9,9 +9,7 @@ public class SpareFrame extends FrameHandler {
         int score = frame.getBaseScore();
 
         if(frame.isLast()){
-            if(frame.isBowled(Ball.THREE))
-                score += frame.getPinCount(Ball.THREE);
-            else
+            if(!frame.isBowled(Ball.THREE))
                 return Frame.Unset;
         }
         else {

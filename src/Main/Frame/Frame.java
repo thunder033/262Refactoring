@@ -19,7 +19,7 @@ public class Frame {
 
     public Frame(){
         state = FrameState.ACTIVE;
-       // pinCounts = new HashMap<>();
+        pinCounts = new HashMap<>();
         pinCounts.put(Ball.ONE, Unset);
         pinCounts.put(Ball.TWO, Unset);
         pinCounts.put(Ball.THREE, Unset);
@@ -74,9 +74,6 @@ public class Frame {
     }
 
     int calculateFrameScore(){
-        if(!isBowled())
-            return Unset;
-
         return state.calculateFrameScore(this);
     }
 

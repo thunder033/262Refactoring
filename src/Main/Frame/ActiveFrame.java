@@ -15,18 +15,13 @@ public class ActiveFrame extends FrameHandler {
             frame.setPinCount(Ball.ONE, count);
         else if(!frame.isBowled(Ball.TWO))
             frame.setPinCount(Ball.TWO, count);
-        else if(frame.isLast())
-            throw new UnsupportedOperationException("No valid frame to set ball on");
-        else {
-            if(frame.isStrike())
-                frame.setFrameState(FrameState.STRIKE);
-            else if(frame.isSpare())
-                frame.setFrameState(FrameState.SPARE);
-            else
-                frame.setFrameState(FrameState.BOWLED);
 
-            frame.next.setPinCount(count);
-        }
+        if(frame.isStrike())
+            frame.setFrameState(FrameState.STRIKE);
+        else if(frame.isSpare())
+            frame.setFrameState(FrameState.SPARE);
+        else if(frame.isBowled(Ball.TWO))
+            frame.setFrameState(FrameState.BOWLED);
     }
 
     @Override
