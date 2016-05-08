@@ -265,7 +265,8 @@ public class Lane extends Observable implements Observer {
 							party = null;
 							partyAssigned = false;
 
-							publish(lanePublish());
+							setChanged();
+							notifyObservers();
 
 							int myIndex = 0;
 							while (scoreIt.hasNext()) {
@@ -372,18 +373,9 @@ public class Lane extends Observable implements Observer {
 		curScore[ index - 1] = score;
 		scores.put(Cur, curScore);
 		getScore( Cur, frame );
-		publish( lanePublish() );
-	}
 
-	/** lanePublish()
-	 *
-	 * Method that creates and returns a newly created laneEvent
-	 * 
-	 * @return		The new lane event
-	 */
-	private LaneEvent lanePublish(  ) {
-		LaneEvent laneEvent = new LaneEvent(party, bowlIndex, currentThrower, cumulScores, scores, frameNumber+1, curScores, ball, gameIsHalted);
-		return laneEvent;
+		setChanged();
+		notifyObservers();
 	}
 
 	/** getScore()
@@ -519,43 +511,38 @@ public class Lane extends Observable implements Observer {
 		return gameFinished;
 	}
 
-	/** subscribe
-	 * 
-	 * Method that will add a subscriber
-	 * 
-	 * @param adding	Observer that is to be added
-	 */
+	//party, bowlIndex, currentThrower, cumulScores, scores, frameNumber+1, curScores, ball, gameIsHalted)
 
-	public void subscribe( LaneObserver adding ) {
-		subscribers.add( adding );
+	public boolean isMechanicalProblem() {
+		return gameIsHalted;
 	}
 
-	/** unsubscribe
-	 * 
-	 * Method that unsubscribes an observer from this object
-	 * 
-	 * @param removing	The observer to be removed
-	 */
-	
-	public void unsubscribe( LaneObserver removing ) {
-		subscribers.remove( removing );
+	public int getFrameNum() {
+		return frameNumber;
 	}
 
-	/** publish
-	 *
-	 * Method that publishes an event to subscribers
-	 * 
-	 * @param event	Event that is to be published
-	 */
+	public HashMap getScores( ) {
+		return scores;
+	}
 
-	public void publish( LaneEvent event ) {
-		if( subscribers.size() > 0 ) {
-			Iterator eventIterator = subscribers.iterator();
-			
-			while ( eventIterator.hasNext() ) {
-				( (LaneObserver) eventIterator.next()).receiveLaneEvent( event );
-			}
-		}
+	public int getIndex() {
+		return bowlIndex;
+	}
+
+	public int getBall( ) {
+		return ball;
+	}
+
+	public int[][] getCumulScore(){
+		return cumulScores;
+	}
+
+	public Vector getParty() {
+		return party;
+	}
+
+	public Bowler getBowler() {
+		return currentThrower;
 	}
 
 	/**
@@ -573,7 +560,9 @@ public class Lane extends Observable implements Observer {
 	 */
 	public void pauseGame() {
 		gameIsHalted = true;
-		publish(lanePublish());
+
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**
@@ -581,7 +570,9 @@ public class Lane extends Observable implements Observer {
 	 */
 	public void unPauseGame() {
 		gameIsHalted = false;
-		publish(lanePublish());
+
+		setChanged();
+		notifyObservers();
 	}
 
 	@Override
