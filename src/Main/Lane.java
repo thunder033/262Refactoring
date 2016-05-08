@@ -134,6 +134,7 @@ package Main;
 import Views.EndGamePrompt;
 import Views.EndGameReport;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Lane extends Observable implements Observer {
@@ -191,10 +192,7 @@ public class Lane extends Observable implements Observer {
 	 * entry point for execution of this lane 
 	 */
 	public void runThread() {
-		laneThread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-
+		laneThread = new Thread(() -> {
 				while (true) {
 					if (partyAssigned && !gameFinished) {    // we have a party on this lane,
 						// so next bower can take a throw
@@ -221,9 +219,8 @@ public class Lane extends Observable implements Observer {
 							if (frameNumber == 9) {
 								finalScores[bowlIndex][gameNumber] = cumulScores[bowlIndex][9];
 								try {
-									Date date = new Date();
-									String dateString = "" + date.getHours() + ":" + date.getMinutes() + " " + date.getMonth() + "/" + date.getDay() + "/" + (date.getYear() + 1900);
-									ScoreHistoryFile.addScore(currentThrower.getNick(), dateString, new Integer(cumulScores[bowlIndex][9]).toString());
+									SimpleDateFormat format = new SimpleDateFormat("H:m M/d/yyyy");
+									ScoreHistoryFile.addScore(currentThrower.getNick(), format.format(new Date()), Integer.toString(cumulScores[bowlIndex][9]));
 								} catch (Exception e) {
 									System.err.println("Exception in addScore. " + e);
 								}
@@ -246,7 +243,6 @@ public class Lane extends Observable implements Observer {
 						int result = egp.getResult();
 						egp.distroy();
 						egp = null;
-
 
 						System.out.println("result was: " + result);
 
@@ -279,19 +275,16 @@ public class Lane extends Observable implements Observer {
 										sr.sendPrintout();
 									}
 								}
-
 							}
 						}
 					}
-
 
 					try {
 						Thread.sleep(10);
 					} catch (Exception e) {
 					}
 				}
-			}
-		});
+			});
 		laneThread.start();
 
 	}
@@ -502,22 +495,12 @@ public class Lane extends Observable implements Observer {
 	public boolean isPartyAssigned() {
 		return partyAssigned;
 	}
-	
-	/** isGameFinished
-	 * 
-	 * @return true if the game is done, false otherwise
-	 */
-	public boolean isGameFinished() {
-		return gameFinished;
-	}
-
-	//party, bowlIndex, currentThrower, cumulScores, scores, frameNumber+1, curScores, ball, gameIsHalted)
 
 	public boolean isMechanicalProblem() {
 		return gameIsHalted;
 	}
 
-	public int getFrameNum() {
+	public int getCurrentFrame() {
 		return frameNumber;
 	}
 
@@ -593,7 +576,7 @@ public class Lane extends Observable implements Observer {
 					}
 				}
 
-				if ((pinsetter.totalPinsDown() != 10) && (pinsetter.getThrowNumber() == 2 && tenthFrameStrike == false)) {
+				if ((pinsetter.totalPinsDown() != 10) && (pinsetter.getThrowNumber() == 2 && !tenthFrameStrike)) {
 					canThrowAgain = false;
 					//publish( lanePublish() );
 				}

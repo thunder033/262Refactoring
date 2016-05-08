@@ -28,4 +28,9 @@ public class ActiveFrame extends FrameHandler {
     int getChainScore(Frame frame, FrameState state) {
         return 0;
     }
+
+    @Override
+    String[] getMarks(Frame frame) {
+        return new String[]{"","",""};
+    }
 }

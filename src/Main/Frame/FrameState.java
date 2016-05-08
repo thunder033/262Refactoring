@@ -26,4 +26,6 @@ enum FrameState {
     public int getChainScore(Frame frame, FrameState forState){
         return state.getChainScore(frame, forState);
     }
+
+    public String[] getMarks(Frame frame){return state.getMarks(frame); }
 }

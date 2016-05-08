@@ -33,7 +33,7 @@ public class Bowler {
     private String nickName;
     private String email;
 
-	ArrayList<Frame> frames;
+	private ArrayList<Frame> frames;
 
     public Bowler( String nick, String full, String mail ) {
         nickName = nick;

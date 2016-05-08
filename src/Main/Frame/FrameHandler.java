@@ -11,4 +11,6 @@ abstract class FrameHandler {
     abstract void setPinCount(Frame frame, int pinCount);
 
     abstract int getChainScore(Frame frame, FrameState state);
+
+    abstract String[] getMarks(Frame frame);
 }

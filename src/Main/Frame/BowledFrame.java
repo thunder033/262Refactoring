@@ -28,4 +28,13 @@ public class BowledFrame extends FrameHandler {
                 return 0;
         }
     }
+
+    @Override
+    String[] getMarks(Frame frame) {
+        return new String[] {
+                frame.getMark(Ball.ONE),
+                frame.getMark(Ball.TWO),
+                frame.getMark(Ball.THREE)
+        };
+    }
 }

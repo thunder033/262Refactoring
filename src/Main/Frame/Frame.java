@@ -45,6 +45,24 @@ public class Frame {
         return isBowled(ball) ? pinCounts.get(ball) : 0;
     }
 
+    /**
+     * Gets the string mark for a ball, does not handle spares
+     * @param ball the ball to get a mark for
+     * @return an empty string for un-bowled, a dash for no pins, or the count as a string
+     */
+    String getMark(Ball ball){
+        if(!isBowled(ball))
+            return "";
+        else {
+            int pins = getPinCount(ball);
+            switch (pins){
+                case 0: return "-";
+                case 10: return "X";
+                default: return Integer.toString(pins);
+            }
+        }
+    }
+
     int getBaseScore(){
         return getPinCount(Ball.ONE) + getPinCount(Ball.TWO) + getPinCount(Ball.THREE);
     }
@@ -88,7 +106,22 @@ public class Frame {
             totalScore = calculateFrameScore() + (prev != null ? prev.getTotalScore() : 0);
     }
 
-    int getTotalScore(){
+    public int getTotalScore(){
         return totalScore;
+    }
+
+    public String getScoreMark(){
+        return totalScore == Unset ? "" : Integer.toString(getTotalScore());
+    }
+
+    public String[] getBallMarks(){
+        return state.getMarks(this);
+    }
+
+    void reset(){
+        totalScore = Unset;
+        pinCounts.put(Ball.ONE, Unset);
+        pinCounts.put(Ball.TWO, Unset);
+        pinCounts.put(Ball.THREE, Unset);
     }
 }

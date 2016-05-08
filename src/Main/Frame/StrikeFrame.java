@@ -51,4 +51,18 @@ public class StrikeFrame extends FrameHandler {
                 return 0;
         }
     }
+
+    @Override
+    String[] getMarks(Frame frame) {
+        /*
+        getMark handles the strike case easily, because if a ball was 10 pins, it is a strike,
+        and the 2nd ball on a non-last frame is un-bowled, we just need to handle the last frame
+         */
+        String mark3 = frame.isLast() && frame.getPinCount(Ball.TWO) + frame.getPinCount(Ball.THREE) == 10 ? "/" : frame.getMark(Ball.THREE);
+        return new String[] {
+                frame.getMark(Ball.ONE),
+                frame.getMark(Ball.TWO),
+                mark3
+        };
+    }
 }

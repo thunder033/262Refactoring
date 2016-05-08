@@ -45,4 +45,13 @@ public class SpareFrame extends FrameHandler {
                 return 0;
         }
     }
+
+    @Override
+    String[] getMarks(Frame frame) {
+        return new String[]{
+                frame.getMark(Ball.ONE),
+                "/",
+                frame.getMark(Ball.THREE)
+        };
+    }
 }
