@@ -21,9 +21,9 @@ public class BowledFrame extends FrameHandler {
     int getChainScore(Frame frame, FrameState forState) {
         switch(forState){
             case STRIKE:
-                return frame.getPinCount(Ball.ONE) + frame.getPinCount(Ball.TWO);
+                return Frame.scoreAdd(frame.getScore(Ball.ONE), frame.getScore(Ball.TWO));
             case SPARE:
-                return frame.getPinCount(Ball.ONE);
+                return frame.getScore(Ball.ONE);
             default:
                 return 0;
         }

@@ -45,6 +45,10 @@ public class Frame {
         return isBowled(ball) ? pinCounts.get(ball) : 0;
     }
 
+    int getScore(Ball ball){
+        return pinCounts.get(ball);
+    }
+
     /**
      * Gets the string mark for a ball, does not handle spares
      * @param ball the ball to get a mark for
@@ -64,7 +68,9 @@ public class Frame {
     }
 
     int getBaseScore(){
-        return getPinCount(Ball.ONE) + getPinCount(Ball.TWO) + getPinCount(Ball.THREE);
+        return isLast()
+                ? scoreAdd(scoreAdd(getPinCount(Ball.ONE), getPinCount(Ball.TWO)), getPinCount(Ball.THREE))
+                : scoreAdd(getPinCount(Ball.ONE), getPinCount(Ball.TWO));
     }
 
     boolean isBowled(){
@@ -102,26 +108,45 @@ public class Frame {
     void calculateTotalScore(){
         if(!isBowled())
             totalScore = Unset;
-        else
-            totalScore = calculateFrameScore() + (prev != null ? prev.getTotalScore() : 0);
+        else {
+            totalScore = Frame.scoreAdd(calculateFrameScore(), (prev != null ? prev.getTotalScore() : 0));
+        }
+
     }
 
     public int getTotalScore(){
+        if(totalScore == Unset)
+            calculateTotalScore();
+
         return totalScore;
     }
 
     public String getScoreMark(){
-        return totalScore == Unset ? "" : Integer.toString(getTotalScore());
+        return getTotalScore() == Unset ? "" : Integer.toString(getTotalScore());
     }
 
     public String[] getBallMarks(){
         return state.getMarks(this);
     }
 
-    void reset(){
+    public void reset(){
         totalScore = Unset;
         pinCounts.put(Ball.ONE, Unset);
         pinCounts.put(Ball.TWO, Unset);
         pinCounts.put(Ball.THREE, Unset);
+        setFrameState(FrameState.ACTIVE);
+
+        if(next != null)
+            next.reset();
+    }
+
+    /**
+     * Ensures Unset scores propagate throughout a calculation
+     * @param a number
+     * @param b number
+     * @return the sum of a and b, or Unset if either one is unset
+     */
+    static int scoreAdd(int a, int b){
+        return a == Frame.Unset || b == Frame.Unset ? Frame.Unset : a + b;
     }
 }

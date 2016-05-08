@@ -25,8 +25,15 @@ public class ActiveFrame extends FrameHandler {
     }
 
     @Override
-    int getChainScore(Frame frame, FrameState state) {
-        return 0;
+    int getChainScore(Frame frame, FrameState forState) {
+        switch(forState){
+            case STRIKE:
+                return Frame.scoreAdd(frame.getScore(Ball.ONE), frame.getScore(Ball.TWO));
+            case SPARE:
+                return frame.getScore(Ball.ONE);
+            default:
+                return 0;
+        }
     }
 
     @Override
