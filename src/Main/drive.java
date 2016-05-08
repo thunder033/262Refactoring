@@ -12,7 +12,7 @@ public class drive {
 		Alley alley = new Alley(numLanes);
 
 		AlleyView cdv = new AlleyView(alley, maxPatronsPerParty);
-		alley.subscribe( cdv );
+		alley.addObserver(cdv);
 
 	}
 }

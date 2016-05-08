@@ -23,7 +23,7 @@ import javax.swing.border.*;
 
 import java.util.*;
 
-public class AlleyView implements ActionListener, AlleyObserver, Observer {
+public class AlleyView implements ActionListener, Observer {
 
 	private JButton addParty, finished, assign;
 	private JFrame win;
@@ -170,19 +170,9 @@ public class AlleyView implements ActionListener, AlleyObserver, Observer {
 		alley.addPartyQueue(addPartyView.getParty());
 	}
 
-	/**
-	 * Receive a broadcast from a Alley
-	 *
-	 * @param ce	the AlleyEvent that triggered the handler
-	 *
-	 */
-
-	public void receiveAlleyEvent(AlleyEvent ce) {
-		partyList.setListData(((Vector) ce.getPartyQueue()));
-	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		//partyList.setListData(((Alley)o).getPartyQueue());
+		partyList.setListData(((Alley)o).getPartyQueue());
 	}
 }

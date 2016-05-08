@@ -44,7 +44,7 @@ package Main;
 import java.util.*;
 import java.io.*;
 
-public class Alley{
+public class Alley extends Observable{
 
 	/** The collection of Lanes */
 	private HashSet lanes;
@@ -146,7 +146,9 @@ public class Alley{
                 curLane.assignParty(((Vector) partyQueue.remove(0)));
             }
         }
-        publish(new AlleyEvent(getPartyQueue()));
+
+		setChanged();
+		notifyObservers();
     }
 
     /**
@@ -170,7 +172,9 @@ public class Alley{
 			partyBowlers.add(newBowler);
 		}
 		partyQueue.add(partyBowlers);
-		publish(new AlleyEvent(getPartyQueue()));
+
+		setChanged();
+		notifyObservers();
 	}
 
     /**
@@ -201,35 +205,6 @@ public class Alley{
 
 	public int getNumLanes() {
 		return numLanes;
-	}
-
-    /**
-     * Allows objects to subscribe as observers
-     * 
-     * @param adding	the AlleyObserver that will be subscribed
-     *
-     */
-
-	public void subscribe(AlleyObserver adding) {
-		subscribers.add(adding);
-	}
-
-    /**
-     * Broadcast an event to subscribing objects.
-     * 
-     * @param event	the AlleyEvent to broadcast
-     *
-     */
-
-	public void publish(AlleyEvent event) {
-		Iterator eventIterator = subscribers.iterator();
-		while (eventIterator.hasNext()) {
-			(
-				(AlleyObserver) eventIterator
-					.next())
-					.receiveAlleyEvent(
-				event);
-		}
 	}
 
     /**
