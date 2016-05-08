@@ -166,51 +166,22 @@ public class LaneView implements ActionListener, Observer {
 				createLaneView();
 			}
 
-			int[][] lescores = lane.getCumulScore();
 			for (int k = 0; k < numBowlers; k++) {
 				Bowler bowler = (Bowler)lane.getParty().get(k);
 				ArrayList<Main.Frame.Frame> frames = bowler.getFrames();
+				//Display Pin Counts
 				for(int i = 0; i < 10; i++){
 					String[] marks = frames.get(i).getBallMarks();
-					scoreLabel[k][i].setText(frames.get(i).getScoreMark());
 					ballLabel[k][i * 2].setText(marks[0]);
 					ballLabel[k][i * 2 + 1].setText(marks[1]);
 
 					if(i == 9)
 						ballLabel[k][i * 2 + 2].setText(marks[2]);
 				}
-
-//				for (int i = 0; i <= lane.getCurrentFrame(); i++) {
-//					if (lescores[k][i] != 0)
-//						scoreLabel[k][i].setText((new Integer(lescores[k][i])).toString());
-//				}
-//				for (int i = 0; i < 21; i++) {
-//					if (((int[]) ((HashMap) lane.getScores())
-//							.get(bowlers.get(k)))[i]
-//							!= -1)
-//						if (((int[]) ((HashMap) lane.getScores())
-//								.get(bowlers.get(k)))[i]
-//								== 10
-//								&& (i % 2 == 0 || i == 19))
-//							ballLabel[k][i].setText("X");
-//						else if (
-//								i > 0
-//										&& ((int[]) ((HashMap) lane.getScores())
-//										.get(bowlers.get(k)))[i]
-//										+ ((int[]) ((HashMap) lane.getScores())
-//										.get(bowlers.get(k)))[i - 1] == 10
-//										&& i % 2 == 1)
-//							ballLabel[k][i].setText("/");
-//						else if (((int[]) ((HashMap) lane.getScores()).get(bowlers.get(k)))[i] == -2) {
-//
-//							ballLabel[k][i].setText("F");
-//						} else
-//							ballLabel[k][i].setText(
-//									(new Integer(((int[]) ((HashMap) lane.getScores())
-//											.get(bowlers.get(k)))[i]))
-//											.toString());
-//
-//				}
+				//Display Scores
+				for(int i = 0; i < 10; i++){
+					scoreLabel[k][i].setText(frames.get(i).getScoreMark());
+				}
 			}
 		}
 	}
