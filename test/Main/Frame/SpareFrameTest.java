@@ -30,6 +30,7 @@ public class SpareFrameTest {
 
     private void setScores(){
         Frame root = frames.get(0);
+        frames.get(0).reset();
         root.setPinCount(1);
         root.setPinCount(1);
 
@@ -38,6 +39,19 @@ public class SpareFrameTest {
 
         root.setPinCount(10);
         root.setPinCount(5);
+        root.setPinCount(5);
+    }
+
+    private void setScores2(){
+        Frame root = frames.get(0);
+        frames.get(0).reset();
+        root.setPinCount(10);
+
+        root.setPinCount(5);
+        root.setPinCount(5);
+
+        root.setPinCount(10);
+        root.setPinCount(10);
         root.setPinCount(5);
     }
 

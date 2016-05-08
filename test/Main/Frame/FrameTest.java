@@ -15,9 +15,20 @@ public class FrameTest {
 
     Frame frame;
 
+    private ArrayList<Frame> frames;
+
     @Before
     public void setUp() throws Exception {
         frame = new Frame();
+        frames = new ArrayList<>();
+        for(int i = 0; i < 3; i++){
+            Frame frame = new Frame();
+            frames.add(frame);
+            if(i > 0){
+                frames.get(i - 1).setNext(frame);
+                frame.setPrev(frames.get(i - 1));
+            }
+        }
     }
 
     @Test
@@ -215,5 +226,67 @@ public class FrameTest {
 
         frame2.calculateTotalScore();
         Assert.assertEquals("Unexpected total score for frame 2", 4, frame2.getTotalScore());
+    }
+
+    @Test
+    public void getTotalScore2() throws Exception {
+        Frame frame = new Frame();
+        frames.add(frame);
+        frames.get(2).setNext(frame);
+        frame.setPrev(frames.get(2));
+
+
+        Frame root = frames.get(0);
+        root.reset();
+
+        //[X, -], [ , ], [ , ], [ , , ]
+        root.setPinCount(10);
+        Assert.assertEquals("Unexpected Total Score result 1b1", Frame.Unset, frames.get(0).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 2b1", Frame.Unset, frames.get(1).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 3b1", Frame.Unset, frames.get(2).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 4b1", Frame.Unset, frames.get(3).getTotalScore());
+
+        //[X,-], [X,-], [ , ], [ , , ]
+        root.setPinCount(10);
+        Assert.assertEquals("Unexpected Total Score result 1b2", Frame.Unset, frames.get(0).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 2b2", Frame.Unset, frames.get(1).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 3b2", Frame.Unset, frames.get(2).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 4b2", Frame.Unset, frames.get(3).getTotalScore());
+
+        //[X,-], [X,-], [5, ], [ , , ]
+        root.setPinCount(5);
+        Assert.assertEquals("Unexpected Total Score result 1b3", 25, frames.get(0).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 2b3", Frame.Unset, frames.get(1).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 3b3", Frame.Unset, frames.get(2).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 4b3", Frame.Unset, frames.get(3).getTotalScore());
+
+        //[X,-], [X,-], [5,5], [ , , ]
+        root.setPinCount(5);
+        Assert.assertEquals("Unexpected Total Score result 1b4", 25, frames.get(0).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 2b4", 45, frames.get(1).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 3b4", Frame.Unset, frames.get(2).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 4b4", Frame.Unset, frames.get(3).getTotalScore());
+
+        //[X,-], [X,-], [5,5], [X, , ]
+        // 25, 20, 20
+        root.setPinCount(10);
+        Assert.assertEquals("Unexpected Total Score result 1b5", 25, frames.get(0).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 2b5", 45, frames.get(1).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 3b5", 65, frames.get(2).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 4b5", Frame.Unset, frames.get(3).getTotalScore());
+
+        //[X,-], [X,-], [5,5], [X,X, ]
+        root.setPinCount(10);
+        Assert.assertEquals("Unexpected Total Score result 1b6", 25, frames.get(0).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 2b6", 45, frames.get(1).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 3b6", 65, frames.get(2).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 4b6", Frame.Unset, frames.get(3).getTotalScore());
+
+        //[X,-], [X,-], [5,5], [X,X,5]
+        root.setPinCount(5);
+        Assert.assertEquals("Unexpected Total Score result 1b7", 25, frames.get(0).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 2b7", 45, frames.get(1).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 3b7", 65, frames.get(2).getTotalScore());
+        Assert.assertEquals("Unexpected Total Score result 4b7", 90, frames.get(3).getTotalScore());
     }
 }
