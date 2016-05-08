@@ -25,11 +25,11 @@ public class Frame {
         pinCounts.put(Ball.THREE, Unset);
     }
 
-    void setNext(Frame frame){
+    public void setNext(Frame frame){
         next = frame;
     }
 
-    void setPrev(Frame frame){
+    public void setPrev(Frame frame){
         prev = frame;
     }
 
@@ -45,8 +45,32 @@ public class Frame {
         return isBowled(ball) ? pinCounts.get(ball) : 0;
     }
 
+    int getScore(Ball ball){
+        return pinCounts.get(ball);
+    }
+
+    /**
+     * Gets the string mark for a ball, does not handle spares
+     * @param ball the ball to get a mark for
+     * @return an empty string for un-bowled, a dash for no pins, or the count as a string
+     */
+    String getMark(Ball ball){
+        if(!isBowled(ball))
+            return "";
+        else {
+            int pins = getPinCount(ball);
+            switch (pins){
+                case 0: return "-";
+                case 10: return "X";
+                default: return Integer.toString(pins);
+            }
+        }
+    }
+
     int getBaseScore(){
-        return getPinCount(Ball.ONE) + getPinCount(Ball.TWO) + getPinCount(Ball.THREE);
+        return isLast()
+                ? scoreAdd(scoreAdd(getPinCount(Ball.ONE), getPinCount(Ball.TWO)), getPinCount(Ball.THREE))
+                : scoreAdd(getPinCount(Ball.ONE), getPinCount(Ball.TWO));
     }
 
     boolean isBowled(){
@@ -69,7 +93,7 @@ public class Frame {
         this.state = state;
     }
 
-    void setPinCount(int count){
+    public void setPinCount(int count){
         state.setPinCount(this, count);
     }
 
@@ -84,11 +108,45 @@ public class Frame {
     void calculateTotalScore(){
         if(!isBowled())
             totalScore = Unset;
-        else
-            totalScore = calculateFrameScore() + (prev != null ? prev.getTotalScore() : 0);
+        else {
+            totalScore = Frame.scoreAdd(calculateFrameScore(), (prev != null ? prev.getTotalScore() : 0));
+        }
+
     }
 
-    int getTotalScore(){
+    public int getTotalScore(){
+        if(totalScore == Unset)
+            calculateTotalScore();
+
         return totalScore;
+    }
+
+    public String getScoreMark(){
+        return getTotalScore() == Unset ? "" : Integer.toString(getTotalScore());
+    }
+
+    public String[] getBallMarks(){
+        return state.getMarks(this);
+    }
+
+    public void reset(){
+        totalScore = Unset;
+        pinCounts.put(Ball.ONE, Unset);
+        pinCounts.put(Ball.TWO, Unset);
+        pinCounts.put(Ball.THREE, Unset);
+        setFrameState(FrameState.ACTIVE);
+
+        if(next != null)
+            next.reset();
+    }
+
+    /**
+     * Ensures Unset scores propagate throughout a calculation
+     * @param a number
+     * @param b number
+     * @return the sum of a and b, or Unset if either one is unset
+     */
+    static int scoreAdd(int a, int b){
+        return a == Frame.Unset || b == Frame.Unset ? Frame.Unset : a + b;
     }
 }

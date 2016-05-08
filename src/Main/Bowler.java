@@ -18,6 +18,10 @@ package Main;
  *
  */
 
+import Main.Frame.Frame;
+
+import java.util.ArrayList;
+
 /**
  *  Class that holds all bowler info
  *
@@ -29,12 +33,31 @@ public class Bowler {
     private String nickName;
     private String email;
 
+	private ArrayList<Frame> frames;
+
     public Bowler( String nick, String full, String mail ) {
-	nickName = nick;
-	fullName = full;
-  	email = mail;
+        nickName = nick;
+        fullName = full;
+        email = mail;
+
+        frames = new ArrayList<>();
+        for(int i = 0; i < 10; i++){
+            Frame frame = new Frame();
+            frames.add(frame);
+            if(i > 0){
+                frames.get(i - 1).setNext(frame);
+                frame.setPrev(frames.get(i - 1));
+            }
+        }
     }
 
+    public void markThrow(int pins){
+        frames.get(0).setPinCount(pins);
+    }
+
+    public ArrayList<Frame> getFrames(){
+        return frames;
+    }
 
     public String getNickName() {
 

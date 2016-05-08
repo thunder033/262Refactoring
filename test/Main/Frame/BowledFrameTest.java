@@ -31,11 +31,12 @@ public class BowledFrameTest {
 
     private void setScores(){
         Frame root = frames.get(0);
+        //[1,1],[ , ],[ , , ]
         root.setPinCount(1);
         root.setPinCount(1);
-
+        //[1,1],[10,-],[ , , ]
         root.setPinCount(10);
-
+        //[1,1],[10,-],[5,5,5]
         root.setPinCount(5);
         root.setPinCount(5);
         root.setPinCount(5);
@@ -65,7 +66,7 @@ public class BowledFrameTest {
     @Test
     public void getChainScore() throws Exception {
         setScores();
-        Assert.assertEquals("Unexpected Chain Score result 1", 10, FrameState.BOWLED.getChainScore(frames.get(1),FrameState.STRIKE));
+        Assert.assertEquals("Unexpected Chain Score result 1", Frame.Unset, FrameState.BOWLED.getChainScore(frames.get(1),FrameState.STRIKE));
         Assert.assertEquals("Unexpected Chain Score result 2", 10, FrameState.BOWLED.getChainScore(frames.get(1),FrameState.SPARE));
         Assert.assertEquals("Unexpected Chain Score result 3", 0, FrameState.BOWLED.getChainScore(frames.get(1),FrameState.BOWLED));
     }

@@ -12,12 +12,8 @@ public class SpareFrame extends FrameHandler {
             if(!frame.isBowled(Ball.THREE))
                 return Frame.Unset;
         }
-        else {
-            if(frame.next.isBowled(Ball.ONE))
-                score += frame.next.getChainScore(FrameState.SPARE);
-            else
-                return Frame.Unset;
-        }
+        else
+            score = Frame.scoreAdd(score, frame.next.getChainScore(FrameState.SPARE));
 
         return score;
     }
@@ -38,11 +34,20 @@ public class SpareFrame extends FrameHandler {
     int getChainScore(Frame frame, FrameState forState) {
         switch(forState){
             case STRIKE:
-                return frame.getPinCount(Ball.ONE) + frame.getPinCount(Ball.TWO);
+                return Frame.scoreAdd(frame.getScore(Ball.ONE), frame.getScore(Ball.TWO));
             case SPARE:
-                return frame.getPinCount(Ball.ONE);
+                return frame.getScore(Ball.ONE);
             default:
                 return 0;
         }
+    }
+
+    @Override
+    String[] getMarks(Frame frame) {
+        return new String[]{
+                frame.getMark(Ball.ONE),
+                "/",
+                frame.getMark(Ball.THREE)
+        };
     }
 }
