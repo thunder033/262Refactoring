@@ -1,6 +1,7 @@
 package Main.Frame;
 
 /**
+ * Defines behaviors when a frame has pin counts that result in a Spare
  * Created by gjr8050 on 5/1/2016.
  */
 public class SpareFrame extends FrameHandler {

@@ -1,6 +1,7 @@
 package Main.Frame;
 
 /**
+ * Defines behavior when frame has finalized pin counts and no special scoring
  * Created by gjr8050 on 5/1/2016.
  */
 public class BowledFrame extends FrameHandler {

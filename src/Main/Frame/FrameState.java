@@ -1,6 +1,8 @@
 package Main.Frame;
 
 /**
+ * Provides static reference to pre-initialized instances of
+ * FrameHandler subclasses
  * Created by gjr8050 on 5/1/2016.
  */
 enum FrameState {

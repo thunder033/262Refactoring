@@ -1,6 +1,7 @@
 package Main.Frame;
 
 /**
+ * Behaviors when a frame does not have it's pin counts finalized
  * Created by gjr8050 on 5/1/2016.
  */
 public class ActiveFrame extends FrameHandler {
